@@ -10,7 +10,8 @@
 (def tx (transmitter))
 (defmulti handle-event (fn [_ [_ event]] event))
 
-(defmethod handle-event :foo [tube [_ _ name]]
+(defmethod handle-event :foo
+  [tube [_ _ name]]
   (println "Hello " name)
   (dispatch tx tube [:say-hello-processed]))
 
@@ -20,4 +21,4 @@
   (resources "/"))
 
 (defn -main [& args]
-  (def stop-server (run-server #'routes {:port 9090})))
+  (def stop-server (run-server (bound-fn [req] (routes req)) {:port 9090})))
