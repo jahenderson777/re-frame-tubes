@@ -1,13 +1,15 @@
 (ns {{ns-name}}.views
   (:require
-   [re-frame.core :as re-frame]
+   [re-frame.core :refer [dispatch subscribe]]
    [{{ns-name}}.events :as events]
-   [{{ns-name}}.subs :as subs]
-   ))
+   [{{ns-name}}.subs :as subs]))
+
+(defn <- [v]
+  (deref (subscribe v)))
 
 (defn main-panel []
-  (let [name (re-frame/subscribe [::subs/name])]
-    [:div
-     [:h1 "Hello from " @name]
-     [:a {:on-click #(re-frame/dispatch [:server :foo])} "click me" ]
-     ]))
+  [:div
+   [:h1 "Hello from " (<- [:get-in [:name]])]
+   [:a {:on-click #(dispatch [:server :foo [:assoc-in [:name]] "baz"])}
+    "click me"]
+   [:pre (str (<- [:get-in]))]])
