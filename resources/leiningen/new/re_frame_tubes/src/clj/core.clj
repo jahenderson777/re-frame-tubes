@@ -1,10 +1,11 @@
-(ns {{name}}.core
+(ns {{ns-name}}.core
     (:require [compojure.core :refer [GET defroutes]]
               [compojure.route :refer [resources]]
               [ring.util.response :refer [resource-response]]
               [org.httpkit.server :refer [run-server]]
               [pneumatic-tubes.core :refer [receiver transmitter dispatch]]
-              [pneumatic-tubes.httpkit :refer [websocket-handler]])
+              [pneumatic-tubes.httpkit :refer [websocket-handler]]
+              [{{name}}.util :refer :all])
   (:gen-class))
 
 (def tx (transmitter))
@@ -13,7 +14,7 @@
 (defmethod handle-event :foo
   [tube [_ _ name]]
   (println "Hello " name)
-  (dispatch tx tube [:say-hello-processed]))
+  (dispatch tx tube [:assoc-in [:name] "foo"]))
 
 (defroutes routes
   (GET "/" [] (resource-response "index.html" {:root "public"}))

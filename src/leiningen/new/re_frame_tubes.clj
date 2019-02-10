@@ -4,8 +4,6 @@
 
 (def render (renderer "re-frame-tubes"))
 
-
-
 (defn re-frame-tubes
   "FIXME: write documentation"
   [name & options]
@@ -18,9 +16,11 @@
              ["project.clj" (render "project.clj" data)]
              [".gitignore" (render ".gitignore" data)]
              ["resources/public/index.html" (render "resources/public/index.html" data)]
+             ["resources/public/css/site.css" (render "resources/public/css/site.css" data)]
+             ["resources/public/js/custom.js" (render "resources/public/js/custom.js" data)]
              ["src/clj/{{sanitized}}/core.clj" (render "src/clj/core.clj" data)]
+             ["src/cljc/{{sanitized}}/util.cljc" (render "src/cljc/util.cljc" data)]
              ["src/cljs/{{sanitized}}/core.cljs" (render "src/cljs/core.cljs" data)]
              ["src/cljs/{{sanitized}}/subs.cljs" (render "src/cljs/subs.cljs" data)]
-             ["src/cljs/{{sanitized}}/views.cljs" (render "src/cljs/views.cljs" data)]
              ["src/cljs/{{sanitized}}/events.cljs" (render "src/cljs/events.cljs" data)]
              )))

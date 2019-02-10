@@ -12,7 +12,7 @@
 
   :min-lein-version "2.5.3"
 
-  :source-paths ["src/clj" "src/cljs"]
+  :source-paths ["src/clj" "src/cljs" "src/cljc"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
@@ -32,11 +32,11 @@
     :plugins      [[lein-figwheel "0.5.18"]]}
 
    :prod { {{#10x?}}:dependencies [[day8.re-frame/tracing-stubs "0.5.1"]]{{/10x?}}}
-   :uberjar {:source-paths ["env/prod/clj"]{{#10x?}}
+   :uberjar {:source-paths ["src/cljc"]{{#10x?}}
              :dependencies [[day8.re-frame/tracing-stubs "0.5.1"]]{{/10x?}}
              :omit-source  true
-             :main         {{ns-name}}.server
-             :aot          [{{ns-name}}.server]
+             :main         {{ns-name}}.core
+             :aot          [{{ns-name}}.core]
              :uberjar-name "{{name}}.jar"
              :prep-tasks   ["compile" ["cljsbuild" "once" "min"]]}
    }
@@ -44,9 +44,10 @@
   :cljsbuild
   {:builds
    [{:id           "dev"
-     :source-paths ["src/cljs"]
+     :source-paths ["src/cljs" "src/cljc"]
      :figwheel     {:on-jsload "{{name}}.core/mount-root"}
      :compiler     {:main                 {{name}}.core
+                    :externs         ["resources/public/js/custom.js"]
                     :output-to            "resources/public/js/compiled/app.js"
                     :output-dir           "resources/public/js/compiled/out"
                     :asset-path           "js/compiled/out"
@@ -60,9 +61,10 @@
                     }}
 
     {:id           "min"
-     :source-paths ["src/cljs"]
+     :source-paths ["src/cljs" "src/cljc"]
      :jar true
      :compiler     {:main            {{name}}.core
+                    :externs         ["resources/public/js/custom.js"]
                     :output-to       "resources/public/js/compiled/app.js"
                     :optimizations   :advanced
                     :closure-defines {goog.DEBUG false}
